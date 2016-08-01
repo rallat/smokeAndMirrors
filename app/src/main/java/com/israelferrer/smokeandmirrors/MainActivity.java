@@ -12,9 +12,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final View view = findViewById(R.id.imageview);
         View parent = findViewById(R.id.parent);
-        View view = findViewById(R.id.imageview);
-        view.animate().x(parent.getMeasuredWidth()).y(parent.getMeasuredHeight()).setStartDelay(800).setDuration(2000).start();
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        final int width = size.x;
+        final int height = size.y;
+        assert parent != null;
+        parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assert view != null;
+                view.animate().x(width).y(height).setDuration(2000).start();
+            }
+        });
     }
-
 }
