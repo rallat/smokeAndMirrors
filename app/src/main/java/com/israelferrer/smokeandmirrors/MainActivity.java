@@ -1,9 +1,8 @@
 package com.israelferrer.smokeandmirrors;
 
-import android.graphics.Point;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Display;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -12,20 +11,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final View view = findViewById(R.id.imageview);
-        View parent = findViewById(R.id.parent);
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        final int width = size.x;
-        final int height = size.y;
-        assert parent != null;
-        parent.setOnClickListener(new View.OnClickListener() {
+        final View clipChildren = findViewById(R.id.clipChildrenButton);
+        final View clipPadding = findViewById(R.id.clipPaddingButton);
+        final View animationOverlay = findViewById(R.id.animationOverlayButton);
+        final View googlePhotosDemo = findViewById(R.id.googlePhotosDemoButton);
+        assert clipChildren != null;
+        clipChildren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assert view != null;
-                view.animate().x(width).y(height).setDuration(2000).start();
+                startActivity(new Intent(MainActivity.this, ClipChildrenActivity.class));
             }
         });
+        assert clipPadding != null;
+        clipPadding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ClipPaddingActivity.class));
+            }
+        });
+        assert animationOverlay != null;
+        animationOverlay.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AnimationOverActivity.class));
+            }
+        });
+        assert googlePhotosDemo != null;
+        googlePhotosDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GooglePhotosActivity.class));
+            }
+        });
+
     }
 }

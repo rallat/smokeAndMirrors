@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">smokeandmirrors</string>
+    <string name="clip_children_demo">Clip children demo</string>
+    <string name="clip_padding_demo">Clip padding demo</string>
+    <string name="animation_overlay">Animation Overlay</string>
+    <string name="google_photos_demo">Google Photos demo</string>
 </resources>

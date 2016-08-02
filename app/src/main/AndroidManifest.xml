@@ -15,6 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ClipChildrenActivity"/>
+        <activity android:name=".ClipPaddingActivity"/>
+        <activity android:name=".AnimationOverActivity"/>
+        <activity android:name=".GooglePhotosActivity"/>
     </application>
 
 </manifest>
