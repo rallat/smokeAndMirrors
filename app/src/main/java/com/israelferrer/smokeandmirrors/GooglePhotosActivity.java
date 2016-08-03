@@ -1,12 +1,14 @@
 package com.israelferrer.smokeandmirrors;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +35,11 @@ public class GooglePhotosActivity extends AppCompatActivity {
     private GridLayoutManager mediumGridLayoutManager;
     private ArrayList<Photo> itemCollection;
     private RecyclerView.Adapter mediumAdapter;
+    private float scaleFactor;
+    private float scaleFactorMedium;
+    private float alphaFactorMedium;
+    private boolean fromSmallToMedium =true;
+    private float lastScaleFactor;
 
 
     @Override
@@ -54,6 +61,89 @@ public class GooglePhotosActivity extends AppCompatActivity {
         };
         setSmallAdapter(listener);
         setMediumAdapter();
+        smallRecyclerView.setPivotX(0);
+        smallRecyclerView.setPivotY(0);
+        mediumRecyclerView.setPivotY(0);
+        mediumRecyclerView.setPivotX(0);
+
+        final ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(this,
+                new ScaleGestureDetector.OnScaleGestureListener() {
+                    public boolean isInProgress;
+
+                    @Override
+                    public boolean onScale(ScaleGestureDetector detector) {
+                        if (gestureTolerance(detector)) {
+                            //small
+                            scaleFactor *= detector.getScaleFactor();
+                            scaleFactor = Math.max(1f, Math.min(scaleFactor, 1.25f));
+                            isInProgress = scaleFactor > 1;
+                            smallRecyclerView.setScaleX(scaleFactor);
+                            smallRecyclerView.setScaleY(scaleFactor);
+
+                            //medium
+                            scaleFactorMedium *= detector.getScaleFactor();
+                            scaleFactorMedium = Math.max(0.8f, Math.min(scaleFactorMedium, 1f));
+                            mediumRecyclerView.setScaleX(scaleFactorMedium);
+                            mediumRecyclerView.setScaleY(scaleFactorMedium);
+
+                            //alpha
+                            mediumRecyclerView.setAlpha((scaleFactor-1)/(0.25f));
+                            smallRecyclerView.setAlpha(1-(scaleFactor-1)/(0.25f));
+
+                        }
+                        return true;
+                    }
+
+                    private boolean gestureTolerance(ScaleGestureDetector detector) {
+                        return detector.getCurrentSpan() - detector.getPreviousSpan() > 10 ||
+                                detector.getCurrentSpan() - detector.getPreviousSpan() < -10;
+                    }
+
+                    @Override
+                    public boolean onScaleBegin(ScaleGestureDetector detector) {
+                        return true;
+                    }
+
+                    @Override
+                    public void onScaleEnd(ScaleGestureDetector detector) {
+//                        if (scaleFactor < 1.11f) {
+//                            scaleFactor = 0;
+//                            smallRecyclerView.animate().scaleX(1f).scaleY(1f).alpha(1f).withStartAction(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    mediumRecyclerView.animate().alpha(0);
+//                                    mediumRecyclerView.setScaleX(1f);
+//                                    mediumRecyclerView.setScaleY(1f);
+//                                }
+//                            }).start();
+//                        } else {
+//                            mediumRecyclerView.animate().scaleX(1f).scaleY(1f).alpha(1f).withStartAction(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    smallRecyclerView.animate().alpha(0);
+//                                    smallRecyclerView.setScaleX(1f);
+//                                    smallRecyclerView.setScaleY(1f);
+//                                }
+//                            }).start();
+//                        }
+                    }
+                });
+        smallRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                scaleGestureDetector.onTouchEvent(e);
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
     }
 
     private void setMediumAdapter() {
@@ -75,6 +165,8 @@ public class GooglePhotosActivity extends AppCompatActivity {
                 return itemCollection.size();
             }
         };
+        mediumRecyclerView.setAdapter(mediumAdapter);
+        mediumRecyclerView.setAlpha(0);
     }
 
     private void setSmallAdapter(final View.OnClickListener listener) {
@@ -83,7 +175,8 @@ public class GooglePhotosActivity extends AppCompatActivity {
             public SmallRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 final ImageView imageView = (ImageView) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.small_item, parent, false);
-                return new SmallRecyclerViewHolder(imageView, listener);
+                //TODO set listener
+                return new SmallRecyclerViewHolder(imageView, null);
             }
 
             @Override
