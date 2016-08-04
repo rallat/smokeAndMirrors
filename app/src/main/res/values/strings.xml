@@ -4,4 +4,6 @@
     <string name="clip_padding_demo">Clip padding demo</string>
     <string name="animation_overlay">Animation Overlay</string>
     <string name="google_photos_demo">Google Photos demo</string>
+    <string name="clip_on">Clip On</string>
+    <string name="clip_off">Clip Off</string>
 </resources>
