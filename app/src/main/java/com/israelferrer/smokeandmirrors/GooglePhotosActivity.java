@@ -1,20 +1,24 @@
 package com.israelferrer.smokeandmirrors;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.israelferrer.smokeandmirrors.gesturedetector.ItemTouchListenerDispatcher;
 import com.israelferrer.smokeandmirrors.gesturedetector.SmallMediumGestureDetector;
-import com.israelferrer.smokeandmirrors.recyclerview.MediumRecyclerViewHolder;
-import com.israelferrer.smokeandmirrors.recyclerview.SmallRecyclerViewHolder;
+import com.israelferrer.smokeandmirrors.view.MediumRecyclerViewHolder;
+import com.israelferrer.smokeandmirrors.view.SmallRecyclerViewHolder;
 
 import java.util.ArrayList;
 
@@ -29,17 +33,15 @@ public class GooglePhotosActivity extends AppCompatActivity {
             SATURN,
             URANUS
     };
-    private static final float TRANSITION_BOUNDARY = 1.09f;
-    private static final float SMALL_MAX_SCALE_FACTOR = 1.25f;
     private RecyclerView smallRecyclerView;
     private RecyclerView mediumRecyclerView;
     private GridLayoutManager smallGridLayoutManager;
     private GridLayoutManager mediumGridLayoutManager;
     private ArrayList<Photo> itemCollection;
     private RecyclerView.Adapter mediumAdapter;
-    private float scaleFactor;
-    private float scaleFactorMedium;
     private RecyclerView.OnItemTouchListener onItemTouchListener;
+    private FrameLayout containerView;
+    private FrameLayout fullScreenContainer;
 
 
     @Override
@@ -49,6 +51,8 @@ public class GooglePhotosActivity extends AppCompatActivity {
         generateCollection();
         smallRecyclerView = (RecyclerView) findViewById(R.id.smallRecyclerView);
         mediumRecyclerView = (RecyclerView) findViewById(R.id.mediumRecyclerView);
+        containerView = (FrameLayout) findViewById(R.id.container);
+        fullScreenContainer = (FrameLayout) findViewById(R.id.fullScreenImageContainer);
         smallGridLayoutManager = new GridLayoutManager(this, SPAN_SMALL);
         smallRecyclerView.setLayoutManager(smallGridLayoutManager);
         mediumGridLayoutManager = new GridLayoutManager(this, SPAN_MEDIUM);
@@ -73,7 +77,47 @@ public class GooglePhotosActivity extends AppCompatActivity {
             public MediumRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 final ImageView imageView = (ImageView) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.medium_item, parent, false);
-                return new MediumRecyclerViewHolder(imageView);
+                return new MediumRecyclerViewHolder(imageView, new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(@NonNull final View itemView) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            ViewCompat.setElevation(itemView, 1);
+                        }
+                        final float originX = itemView.getX();
+                        final float originY = itemView.getY();
+                        AnimationUtils.disableParentsClip(itemView);
+                        float parentCenterX = (containerView.getWidth() + containerView.getX()) / 2;
+                        float parentCenterY = (containerView.getHeight() + containerView.getY()) / 2;
+                        final int deltaScale = containerView.getMeasuredWidth() / itemView.getMeasuredWidth();
+                        itemView.animate().x(parentCenterX - itemView.getWidth() / 2)
+                                .y(parentCenterY - itemView.getHeight() / 2)
+                                .scaleX(deltaScale).scaleY(deltaScale).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                fullScreenContainer.setVisibility(View.VISIBLE);
+                                fullScreenContainer.setBackgroundColor(
+                                        getResources().getColor(android.R.color.black));
+                                fullScreenContainer.getOverlay().add(itemView);
+                                fullScreenContainer.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        fullScreenContainer.setBackgroundColor(
+                                                getResources().getColor(android.R.color.transparent));
+                                        itemView.animate().x(originX).y(originY).scaleY(1).scaleX(1).withEndAction(
+                                                new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        fullScreenContainer.setVisibility(View.GONE);
+                                                        fullScreenContainer.getOverlay().remove(itemView);
+                                                    }
+                                                }).start();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
@@ -96,7 +140,7 @@ public class GooglePhotosActivity extends AppCompatActivity {
             public SmallRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 final ImageView imageView = (ImageView) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.small_item, parent, false);
-                return new SmallRecyclerViewHolder(imageView, null);
+                return new SmallRecyclerViewHolder(imageView);
             }
 
             @Override

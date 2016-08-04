@@ -1,4 +1,4 @@
-package com.israelferrer.smokeandmirrors.recyclerview;
+package com.israelferrer.smokeandmirrors.view;
 
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +8,9 @@ import android.widget.ImageView;
 public class SmallRecyclerViewHolder extends RecyclerView.ViewHolder{
     private final ImageView imageView;
 
-    public SmallRecyclerViewHolder(ImageView imageView, View.OnClickListener listener) {
+    public SmallRecyclerViewHolder(ImageView imageView) {
         super(imageView);
         this.imageView = imageView;
-        this.imageView.setOnClickListener(listener);
     }
 
     public void setImageResource(@DrawableRes int id) {

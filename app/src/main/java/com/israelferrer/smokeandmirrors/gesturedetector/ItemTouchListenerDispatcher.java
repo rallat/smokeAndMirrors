@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import com.israelferrer.smokeandmirrors.R;
 
@@ -33,10 +34,13 @@ public class ItemTouchListenerDispatcher implements RecyclerView.OnItemTouchList
         currentSpan = getSpan(e);
         switch (rv.getId()) {
             case R.id.mediumRecyclerView: {
-                if (currentSpan > 0) {
-                    fullScreenGestureDirectory.onTouchEvent(e);
-                } else {
+                if (currentSpan < 0) {
                     galleryGestureDirectory.onTouchEvent(e);
+                } else if (currentSpan == 0) {
+                    final View childViewUnder = rv.findChildViewUnder(e.getX(), e.getY());
+                    if (childViewUnder != null) {
+                        childViewUnder.performClick();
+                    }
                 }
                 break;
             }

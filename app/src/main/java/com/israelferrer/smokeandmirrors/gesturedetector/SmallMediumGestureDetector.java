@@ -88,7 +88,7 @@ public class SmallMediumGestureDetector implements ScaleGestureDetector.OnScaleG
         }).withEndAction(new Runnable() {
             @Override
             public void run() {
-//                smallRecyclerView.setVisibility(View.INVISIBLE);
+                smallRecyclerView.setVisibility(View.INVISIBLE);
             }
         }).start();
     }
@@ -103,7 +103,7 @@ public class SmallMediumGestureDetector implements ScaleGestureDetector.OnScaleG
         }).withEndAction(new Runnable() {
             @Override
             public void run() {
-//                mediumRecyclerView.setVisibility(View.INVISIBLE);
+                mediumRecyclerView.setVisibility(View.INVISIBLE);
             }
         }).start();
     }
