@@ -1,5 +1,7 @@
-package com.israelferrer.smokeandmirrors;
+package com.israelferrer.smokeandmirrors.activity;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-public class ClipPaddingActivity extends AppCompatActivity {
+import com.israelferrer.smokeandmirrors.AnimationUtils;
+import com.israelferrer.smokeandmirrors.R;
 
+public class ClipChildrenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clip_padding);
+        setContentView(R.layout.activity_clip_children);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

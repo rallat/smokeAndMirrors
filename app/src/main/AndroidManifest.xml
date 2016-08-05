@@ -8,17 +8,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ClipChildrenActivity"/>
-        <activity android:name=".ClipPaddingActivity"/>
-        <activity android:name=".AnimationOverActivity"/>
-        <activity android:name=".GooglePhotosActivity"/>
+        <activity android:name=".activity.ClipChildrenActivity"/>
+        <activity android:name=".activity.ClipPaddingActivity"/>
+        <activity android:name=".activity.AnimationOverActivity"/>
+        <activity android:name=".activity.GooglePhotosActivity"/>
     </application>
 
 </manifest>

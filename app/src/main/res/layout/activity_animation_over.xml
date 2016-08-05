@@ -13,11 +13,11 @@
         android:src="@drawable/profile"/>
 
     <ImageView
-        android:id="@+id/saturn"
+        android:id="@+id/uranus"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/saturn"
+        android:layout_alignStart="@+id/profile"
         android:layout_below="@+id/profile"
-        android:layout_alignStart="@+id/profile"/>
+        android:src="@drawable/uranus"/>
 
 </RelativeLayout>

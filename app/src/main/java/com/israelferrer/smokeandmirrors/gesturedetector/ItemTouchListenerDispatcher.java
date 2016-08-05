@@ -11,16 +11,16 @@ import com.israelferrer.smokeandmirrors.R;
 
 public class ItemTouchListenerDispatcher implements RecyclerView.OnItemTouchListener {
     @NonNull
-    private final ScaleGestureDetector galleryGestureDirectory;
+    private final ScaleGestureDetector galleryGestureDetector;
     @NonNull
-    private final ScaleGestureDetector fullScreenGestureDirectory;
+    private final ScaleGestureDetector fullScreenGestureDetector;
     private float currentSpan;
 
     public ItemTouchListenerDispatcher(@NonNull Context context,
-            @NonNull final ScaleGestureDetector fullScreenGestureDirectory,
-            @NonNull ScaleGestureDetector galleryGestureDirectory) {
-        this.galleryGestureDirectory = galleryGestureDirectory;
-        this.fullScreenGestureDirectory = fullScreenGestureDirectory;
+            @NonNull final ScaleGestureDetector fullScreenGestureDetector,
+            @NonNull ScaleGestureDetector galleryGestureDetector) {
+        this.galleryGestureDetector = galleryGestureDetector;
+        this.fullScreenGestureDetector = fullScreenGestureDetector;
     }
 
 
@@ -35,7 +35,7 @@ public class ItemTouchListenerDispatcher implements RecyclerView.OnItemTouchList
         switch (rv.getId()) {
             case R.id.mediumRecyclerView: {
                 if (currentSpan < 0) {
-                    galleryGestureDirectory.onTouchEvent(e);
+                    galleryGestureDetector.onTouchEvent(e);
                 } else if (currentSpan == 0) {
                     final View childViewUnder = rv.findChildViewUnder(e.getX(), e.getY());
                     if (childViewUnder != null) {
@@ -45,7 +45,7 @@ public class ItemTouchListenerDispatcher implements RecyclerView.OnItemTouchList
                 break;
             }
             case R.id.smallRecyclerView: {
-                galleryGestureDirectory.onTouchEvent(e);
+                galleryGestureDetector.onTouchEvent(e);
                 break;
             }
             default: {

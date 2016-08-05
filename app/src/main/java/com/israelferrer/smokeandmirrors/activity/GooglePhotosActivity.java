@@ -1,4 +1,4 @@
-package com.israelferrer.smokeandmirrors;
+package com.israelferrer.smokeandmirrors.activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.israelferrer.smokeandmirrors.AnimationUtils;
+import com.israelferrer.smokeandmirrors.R;
 import com.israelferrer.smokeandmirrors.gesturedetector.ItemTouchListenerDispatcher;
 import com.israelferrer.smokeandmirrors.gesturedetector.SmallMediumGestureDetector;
+import com.israelferrer.smokeandmirrors.model.Photo;
 import com.israelferrer.smokeandmirrors.view.MediumRecyclerViewHolder;
 import com.israelferrer.smokeandmirrors.view.SmallRecyclerViewHolder;
 
@@ -26,11 +29,11 @@ public class GooglePhotosActivity extends AppCompatActivity {
     private static final int SPAN_SMALL = 4;
     private static final int SPAN_MEDIUM = 3;
     private static final Photo PROFILE = new Photo(R.drawable.profile);
-    private static final Photo SATURN = new Photo(R.drawable.saturn);
+    private static final Photo EARTH = new Photo(R.drawable.earth);
     private static final Photo URANUS = new Photo(R.drawable.uranus);
     private static final Photo[] PHOTOS = new Photo[] {
             PROFILE,
-            SATURN,
+            EARTH,
             URANUS
     };
     private RecyclerView smallRecyclerView;

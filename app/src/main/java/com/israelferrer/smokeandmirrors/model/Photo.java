@@ -1,4 +1,4 @@
-package com.israelferrer.smokeandmirrors;
+package com.israelferrer.smokeandmirrors.model;
 
 import android.support.annotation.DrawableRes;
 

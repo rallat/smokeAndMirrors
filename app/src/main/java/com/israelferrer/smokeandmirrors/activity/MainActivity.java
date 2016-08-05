@@ -1,9 +1,11 @@
-package com.israelferrer.smokeandmirrors;
+package com.israelferrer.smokeandmirrors.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.israelferrer.smokeandmirrors.R;
 
 public class MainActivity extends AppCompatActivity {
 

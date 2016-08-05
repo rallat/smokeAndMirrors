@@ -1,9 +1,11 @@
-package com.israelferrer.smokeandmirrors;
+package com.israelferrer.smokeandmirrors.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.israelferrer.smokeandmirrors.R;
 
 public class AnimationOverActivity extends AppCompatActivity {
     @Override
@@ -11,7 +13,7 @@ public class AnimationOverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation_over);
         final View profile = findViewById(R.id.profile);
-        final View saturn = findViewById(R.id.saturn);
+        final View saturn = findViewById(R.id.uranus);
         assert saturn != null;
         assert profile != null;
         saturn.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
