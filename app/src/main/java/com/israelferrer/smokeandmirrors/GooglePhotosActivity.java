@@ -147,7 +147,7 @@ public class GooglePhotosActivity extends AppCompatActivity {
             @Override
             public void onTouchEvent(RecyclerView rv, MotionEvent e) {
                 if (scaleGestureDetector.isInProgress()) {
-                scaleGestureDetector.onTouchEvent(e);
+                    scaleGestureDetector.onTouchEvent(e);
                 } else {
                     tapGestureDetector.onTouchEvent(e);
                 }
@@ -189,7 +189,6 @@ public class GooglePhotosActivity extends AppCompatActivity {
             public SmallRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 final ImageView imageView = (ImageView) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.small_item, parent, false);
-                //TODO set listener
                 return new SmallRecyclerViewHolder(imageView, null);
             }
 
@@ -219,11 +218,6 @@ public class GooglePhotosActivity extends AppCompatActivity {
                 mediumRecyclerView.setScaleX(0.8f);
                 mediumRecyclerView.setScaleY(0.8f);
                 mediumRecyclerView.animate().scaleX(1).scaleY(1).setDuration(700).alpha(1).start();
-            }
-        }).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                smallRecyclerView.setVisibility(View.INVISIBLE);
             }
         }).setDuration(700).start();
     }
