@@ -19,6 +19,7 @@
         <activity android:name=".activity.ClipPaddingActivity"/>
         <activity android:name=".activity.AnimationOverActivity"/>
         <activity android:name=".activity.GooglePhotosActivity"/>
+        <activity android:name=".activity.AnimationOverActivity"/>
     </application>
 
 </manifest>
