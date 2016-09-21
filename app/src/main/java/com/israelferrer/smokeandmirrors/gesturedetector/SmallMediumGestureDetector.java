@@ -9,6 +9,7 @@ import android.view.View;
 public class SmallMediumGestureDetector implements ScaleGestureDetector.OnScaleGestureListener {
     private static final float TRANSITION_BOUNDARY = 1.09f;
     private static final float SMALL_MAX_SCALE_FACTOR = 1.25f;
+    private static final int SPAN_SLOP = 7;
 
     @NonNull private final RecyclerView smallRecyclerView;
     @NonNull private final RecyclerView mediumRecyclerView;
@@ -47,8 +48,8 @@ public class SmallMediumGestureDetector implements ScaleGestureDetector.OnScaleG
     }
 
     private boolean gestureTolerance(@NonNull ScaleGestureDetector detector) {
-        return detector.getCurrentSpan() - detector.getPreviousSpan() > 7 ||
-                detector.getCurrentSpan() - detector.getPreviousSpan() < -7;
+        final float spanDelta = Math.abs(detector.getCurrentSpan() - detector.getPreviousSpan());
+        return spanDelta > SPAN_SLOP;
     }
 
     @Override
