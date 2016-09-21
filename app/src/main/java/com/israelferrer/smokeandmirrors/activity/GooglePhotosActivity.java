@@ -1,10 +1,8 @@
 package com.israelferrer.smokeandmirrors.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.israelferrer.smokeandmirrors.AnimationUtils;
 import com.israelferrer.smokeandmirrors.R;
 import com.israelferrer.smokeandmirrors.gesturedetector.ItemTouchListenerDispatcher;
 import com.israelferrer.smokeandmirrors.gesturedetector.SmallMediumGestureDetector;
@@ -84,35 +82,35 @@ public class GooglePhotosActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(@NonNull final View itemView) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ViewCompat.setElevation(itemView, 1);
-                        }
                         final float originX = itemView.getX();
                         final float originY = itemView.getY();
-                        AnimationUtils.disableParentsClip(itemView);
                         float parentCenterX = (containerView.getWidth() + containerView.getX()) / 2;
                         float parentCenterY = (containerView.getHeight() + containerView.getY()) / 2;
                         final int deltaScale = containerView.getMeasuredWidth() / itemView.getMeasuredWidth();
+                        final ViewGroupOverlay overlay = fullScreenContainer.getOverlay();
+                        overlay.clear();
+                        overlay.add(itemView);
+                        fullScreenContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                        fullScreenContainer.setVisibility(View.VISIBLE);
                         itemView.animate().x(parentCenterX - itemView.getWidth() / 2)
                                 .y(parentCenterY - itemView.getHeight() / 2)
                                 .scaleX(deltaScale).scaleY(deltaScale).withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                fullScreenContainer.setVisibility(View.VISIBLE);
                                 fullScreenContainer.setBackgroundColor(
                                         getResources().getColor(android.R.color.black));
-                                fullScreenContainer.getOverlay().add(itemView);
                                 fullScreenContainer.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        overlay.add(itemView);
                                         fullScreenContainer.setBackgroundColor(
                                                 getResources().getColor(android.R.color.transparent));
                                         itemView.animate().x(originX).y(originY).scaleY(1).scaleX(1).withEndAction(
                                                 new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        overlay.remove(itemView);
                                                         fullScreenContainer.setVisibility(View.GONE);
-                                                        fullScreenContainer.getOverlay().remove(itemView);
                                                     }
                                                 }).start();
                                     }
